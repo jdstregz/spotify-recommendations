@@ -91,12 +91,12 @@ const NobBoard = ({onChange}) => {
 
   useEffect(() => {
     onChange(boardValues);
-  }, [boardValues]);
+  }, [onChange, boardValues]);
 
   return (
    <Grid container spacing={2} style={{padding: 10}}>
      {Object.keys(nobs).map(nob => (
-       <Grid item xs={12}>
+       <Grid item xs={12} key={nob}>
          <div style={{display: 'flex', flexDirection: 'row'}}>
            <Checkbox
              checked={boardValues[nob].enabled}

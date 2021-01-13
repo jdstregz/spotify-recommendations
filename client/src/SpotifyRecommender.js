@@ -6,6 +6,7 @@ import {Grid, TextField, Button, Typography} from '@material-ui/core';
 import {Search} from '@material-ui/icons';
 import SearchResults from './components/SearchResults';
 import NobBoard from './components/NobBoard';
+import ResultsList from "./components/ResultsList";
 
 const SpotifyRecommender = ({auth}) => {
   const {token} = auth;
@@ -13,6 +14,7 @@ const SpotifyRecommender = ({auth}) => {
   const [searchResults, setSearchResults] = useState([]);
   const [selectedArtists, setSelectedArtists] = useState([]);
   const [nobValues, setNobValues] = useState({});
+  const [results, setResults] = useState(null)
 
   const searchSpotify = async () => {
     const url = 'https://api.spotify.com/v1/search';
@@ -52,13 +54,14 @@ const SpotifyRecommender = ({auth}) => {
     const minString = min.join('&');
     const maxString = max.join('&');
 
+    console.log(`${url}?${selectedArtistsString}&${minString}&${maxString}`)
 
     const {data} = await axios.get(`${url}?${selectedArtistsString}&${minString}&${maxString}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       }
     });
-    console.log(data);
+    setResults(data)
   };
 
   return (
@@ -99,6 +102,9 @@ const SpotifyRecommender = ({auth}) => {
             <Button variant={'contained'} onClick={getRecommendations}>
               Get Recommendations
             </Button>
+          </Grid>
+          <Grid item xs={12}>
+            {results && <ResultsList results={results}/> }
           </Grid>
         </Grid>
     </div>
